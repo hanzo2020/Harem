@@ -61,9 +61,15 @@ public class HaremGame {
 					System.out.println("陛下，并未找到此人");
 					break;
 				}
-				
-				
-				
+				loves[searchIndex] += 30;
+				if(level[searchIndex] + 1 != levelNames.length){
+					level[searchIndex] ++;
+					System.out.println(Names[searchIndex] + "等级提升");
+				}
+				for (int i = 0; i < nnCount; i++) {
+					loves[i] -= 10;
+				}
+				System.out.println("宠幸" + Names[searchIndex] + "成功，好感度+10，其他人物好感度-10!");
 				break;
 			case 3:
 			case 4:
@@ -76,6 +82,7 @@ public class HaremGame {
 				System.out.println(Names[i] + "\t" + levelNames[level[i]] + "\t" + loves[i]);
 				
 			}
+			gameDays++;
 		
 		}
 		
