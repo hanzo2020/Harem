@@ -1,5 +1,8 @@
 package pers.cb1;
 import java.applet.Applet;
+import java.applet.AudioClip;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Scanner;
 
 import javax.swing.ImageIcon;
@@ -34,17 +37,10 @@ public class HaremGame {
 		JOptionPane.showMessageDialog(null,"导师，录制马上开始，学员们已经等候多时了！", "大型在线真人选秀游戏：青春有你2",0, new ImageIcon("image/test1.jpg"));
 		while(gameDays <= 10)//运行十天
 		{
-			/*System.out.println("第" + gameDays + "天");
-			System.out.println("1、下旨选妃\t增加");
-			System.out.println("2、翻牌宠幸\t爽爽");
-			System.out.println("3、打入冷宫\t删除");
-			System.out.println("4、召见查看\t查找");
-			System.out.println("陛下请输入数字选择行动");
-			int choice = input.nextInt();*/
-			String strMenu = "1、下旨选妃\n";
-			strMenu += "2、翻牌宠幸\n";
-			strMenu += "3、打入冷宫\n";
-			strMenu += "4、召见查看\n";
+			String strMenu = "1、海选新人\n";
+			strMenu += "2、舞台表演\n";
+			strMenu += "3、强制退赛\n";
+			strMenu += "4、私下交友\n";
 			strMenu += "请选择活动";
 			Object objResult = JOptionPane.showInputDialog(null, strMenu, "第" + gameDays + "天", 0, new ImageIcon("image/test1.jpg"),new String[]{"1","2","3","4"},null);		
 			if(objResult == null){
@@ -58,11 +54,8 @@ public class HaremGame {
 					System.out.println("陛下，可纳数量已经达到上限，选妃圣旨被皇太后驳回!");
 					break;
 				}
-				//System.out.println("请给新妃子取个名字：");
-				//String newName = input.next();
 				objResult = (JOptionPane.showInputDialog(null, "请选择新进选手", "海选", 0, new ImageIcon("image/1.jpg"), addName, null));
 				//增加姓名数组，等级数组，好感度数组；
-				//Names[nnCount] = newName;
 				if(objResult == null){
 					//用户点击了取消
 					continue;
@@ -93,10 +86,10 @@ public class HaremGame {
 						break;
 					}
 				}
-				if(searchIndex < 0){
-					System.out.println("陛下，并未找到此人");
+				/*if(searchIndex < 0){
+					System.out.println("陛下，并未找到此人");//现在不会找不到
 					break;
-				}
+				}*/
 				loves[searchIndex] += 30;
 				if(level[searchIndex] + 1 != levelNames.length){
 					level[searchIndex] ++;
@@ -105,7 +98,20 @@ public class HaremGame {
 				for (int i = 0; i < nnCount; i++) {
 					loves[i] -= 10;
 				}
-				System.out.println("宠幸" + Names[searchIndex] + "成功，好感度+10，其他人物好感度-10!");
+				if (name == "菜虚鲲"){
+					File soundFile = new File("sounds/12.wav");
+					try {
+						AudioClip sound = Applet.newAudioClip(soundFile.toURL());
+						sound.play();
+						//sound.stop();
+						System.out.println("播放成功");
+					} catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+				JOptionPane.showMessageDialog(null, Names[searchIndex] + "才艺展示成功，积分+10，其他人物积分-10!","才艺展示",0,new ImageIcon("image/test1.jpg"));
 				break;
 			case "3":
 			case "4":
@@ -113,12 +119,8 @@ public class HaremGame {
 				System.out.println("请输入正确选项");
 				continue;
 			}
-			/*System.out.println("姓名\t级别\t好感度");
-			for (int i = 0; i < nnCount; i++) {
-				System.out.println(Names[i] + "\t" + levelNames[level[i]] + "\t" + loves[i]);
-				
-			}*/
 			//每日结算
+			
 			String value = "青春有你积分榜！\n";
 			for (int i = 0; i < nnCount; i++) {
 				value += String.format("%s   %s   %d\n",Names[i],levelNames[level[i]], loves[i]);
