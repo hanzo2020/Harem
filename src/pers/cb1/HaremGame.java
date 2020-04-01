@@ -3,6 +3,7 @@ import java.applet.Applet;
 import java.applet.AudioClip;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.Date;
 import java.util.Scanner;
 
 import javax.swing.ImageIcon;
@@ -32,7 +33,7 @@ public class HaremGame {
 		int gameDays = 1;//回合数
 		//设定默认好感度
 		for (int i = 0; i < nnCount; i++) {
-			loves[i] = 100;
+			loves[i] = 60;
 		}
 		JOptionPane.showMessageDialog(null,"导师，录制马上开始，学员们已经等候多时了！", "大型在线真人选秀游戏：青春有你2",0, new ImageIcon("image/test1.jpg"));
 		while(gameDays <= 10)//运行十天
@@ -119,15 +120,26 @@ public class HaremGame {
 				System.out.println("请输入正确选项");
 				continue;
 			}
-			//每日结算
+			//每日结算,如果有三个以上选手积分低于60，游戏结束强制退出
+			int count = 0;
+			for (int i = 0; i < nnCount; i++) {
+				if(loves[i] < 60)
+				{
+					count++;
+				}
+			}
+			String resultValue = "多名选手积分过低，选手表示不服，节目现场发生混乱!\n\n\n";
+			resultValue += new Date().toLocaleString();
+			if(count >= 3){
+				JOptionPane.showMessageDialog(null, resultValue, "突发！", 0, new ImageIcon("image/1.jpg"));
+				System.exit(0);
+			}
 			
 			String value = "青春有你积分榜！\n";
 			for (int i = 0; i < nnCount; i++) {
 				value += String.format("%s   %s   %d\n",Names[i],levelNames[level[i]], loves[i]);
 				
-			}
-			
-					
+			}		
 			JOptionPane.showMessageDialog(null, value, "每日结算", 0, new ImageIcon("image/test1.jpg"));
 			gameDays++;
 		
