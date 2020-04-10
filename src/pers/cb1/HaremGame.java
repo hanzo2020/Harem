@@ -12,15 +12,15 @@ import javax.swing.JOptionPane;
  * 选妃项目，后期想改成蔡徐坤
  * 对话框
  * JOptionPane是java选项面板类
+JOptionPane.showMessageDialog(null, "hi");//参数1：对话框的父窗体，参数2：提示信息
+JOptionPane.showMessageDialog(null,"hello","打招呼",JOptionPane.QUESTION_MESSAGE );//参数2：对话框种的提示信息，参数3：对话框的标题信息，参数4:对话框的消息类型
+JOptionPane.showMessageDialog(null,"hello","打招呼",JOptionPane.QUESTION_MESSAGE, new ImageIcon("image/1.jpg"));
+JOptionPane.showInputDialog(null,"做出你的选择！","标题", 0,new ImageIcon("image/test1.jpg"),new String[]{"蔡徐坤","离婚少妇","擒牛振威"},null);
+JOptionPane.showConfirmDialog(null, "是否为蔡徐坤投上一票");
  */
 //sound = Applet.newAudioClip(new File("sounds/背景音乐.wav").toURL())
 public class HaremGame {
 	public static void main(String[] args) {
-		//JOptionPane.showMessageDialog(null, "hi");//参数1：对话框的父窗体，参数2：提示信息
-		//JOptionPane.showMessageDialog(null,"hello","打招呼",JOptionPane.QUESTION_MESSAGE );//参数2：对话框种的提示信息，参数3：对话框的标题信息，参数4:对话框的消息类型
-		//JOptionPane.showMessageDialog(null,"hello","打招呼",JOptionPane.QUESTION_MESSAGE, new ImageIcon("image/1.jpg"));
-		//JOptionPane.showInputDialog(null,"做出你的选择！","标题", 0,new ImageIcon("image/test1.jpg"),new String[]{"蔡徐坤","离婚少妇","擒牛振威"},null);
-		//JOptionPane.showConfirmDialog(null, "是否为蔡徐坤投上一票");
 		Scanner input = new Scanner(System.in);
 		String Name;//存放输入的姓名
 		String addName[] = {"邦哥","吴亦凡","giao哥","冬泳怪鸽"};//可添加的人物
@@ -33,7 +33,7 @@ public class HaremGame {
 		int gameDays = 1;//回合数
 		//设定默认好感度
 		for (int i = 0; i < nnCount; i++) {
-			loves[i] = 60;
+			loves[i] = 100;
 		}
 		JOptionPane.showMessageDialog(null,"导师，录制马上开始，学员们已经等候多时了！", "大型在线真人选秀游戏：青春有你2",0, new ImageIcon("image/test1.jpg"));
 		while(gameDays <= 10)//运行十天
@@ -71,8 +71,6 @@ public class HaremGame {
 				nnCount++;
 				break;
 			case "2"://翻牌儿，查找并修改
-				//System.out.println("今晚想翻谁的牌？");
-				//String name = input.next();
 				objResult = JOptionPane.showInputDialog(null, "请选择", "才艺表演", 0, new ImageIcon("image/sy.jpg"), Names, null);
 				if(objResult == null){
 					//点了取消
@@ -87,10 +85,6 @@ public class HaremGame {
 						break;
 					}
 				}
-				/*if(searchIndex < 0){
-					System.out.println("陛下，并未找到此人");//现在不会找不到
-					break;
-				}*/
 				loves[searchIndex] += 30;
 				if(level[searchIndex] + 1 != levelNames.length){
 					level[searchIndex] ++;
@@ -100,17 +94,7 @@ public class HaremGame {
 					loves[i] -= 10;
 				}
 				if (name == "菜虚鲲"){
-					File soundFile = new File("sounds/12.wav");
-					try {
-						AudioClip sound = Applet.newAudioClip(soundFile.toURL());
-						sound.play();
-						//sound.stop();
-						System.out.println("播放成功");
-					} catch (MalformedURLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
+					xukun();	
 				}
 				JOptionPane.showMessageDialog(null, Names[searchIndex] + "才艺展示成功，积分+10，其他人物积分-10!","才艺展示",0,new ImageIcon("image/test1.jpg"));
 				break;
@@ -119,37 +103,58 @@ public class HaremGame {
 			default:
 				System.out.println("请输入正确选项");
 				continue;
-			}
-			//每日结算,如果有三个以上选手积分低于60，游戏结束强制退出
-			int count = 0;
-			for (int i = 0; i < nnCount; i++) {
-				if(loves[i] < 60)
-				{
-					count++;
-				}
-			}
-			String resultValue = "多名选手积分过低，选手表示不服，节目现场发生混乱!\n\n\n";
-			resultValue += new Date().toLocaleString();
-			if(count >= 3){
-				JOptionPane.showMessageDialog(null, resultValue, "突发！", 0, new ImageIcon("image/1.jpg"));
-				System.exit(0);
-			}
-			
-			String value = "青春有你积分榜！\n";
-			for (int i = 0; i < nnCount; i++) {
-				value += String.format("%s   %s   %d\n",Names[i],levelNames[level[i]], loves[i]);
-				
-			}		
-			JOptionPane.showMessageDialog(null, value, "每日结算", 0, new ImageIcon("image/test1.jpg"));
+			}//switch case的大括号
+			gameOver(nnCount, loves);//根据积分，判断游戏是否结束
+			Statistical(nnCount, Names, levelNames, level, loves);//打印积分窗口
 			gameDays++;
 		
+		}//循环的大括号
+		
+
+	}//main函数的大括号
+	
+	/*
+	 * 每轮结束后打印积分窗口
+	 */
+	public static void Statistical(int nnCount, String[] Names, String[] levelNames,int[] level, int[] loves){
+		String value = "青春有你积分榜！\n";
+		for (int i = 0; i < nnCount; i++) {
+			value += String.format("%s   %s   %d\n",Names[i],levelNames[level[i]], loves[i]);
+			
+		}		
+		JOptionPane.showMessageDialog(null, value, "每日结算", 0, new ImageIcon("image/test1.jpg"));
+	}
+	/*
+	 * //每日结算,如果有三个以上选手积分低于60，游戏结束强制退出
+	 */
+	public static void gameOver(int nnCount,int[] loves){
+		int count = 0;
+		for (int i = 0; i < nnCount; i++) {
+			if(loves[i] < 60)
+			{
+				count++;
+			}
 		}
-		
-		
-		
-		
-		
-		
-		
+		String resultValue = "多名选手积分过低，选手表示不服，节目现场发生混乱!\n\n\n";
+		resultValue += new Date().toLocaleString();
+		if(count >= 3){
+			JOptionPane.showMessageDialog(null, resultValue, "突发！", 0, new ImageIcon("image/1.jpg"));
+			System.exit(0);
+		}
+	}
+	/*
+	 * 蔡徐坤才艺表演事件集
+	 */
+	public static void xukun(){
+		File soundFile = new File("sounds/12.wav");
+		try {
+			AudioClip sound = Applet.newAudioClip(soundFile.toURL());
+			sound.play();
+			//sound.stop();
+			System.out.println("播放成功");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
