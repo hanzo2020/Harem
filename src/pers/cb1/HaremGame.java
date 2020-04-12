@@ -19,9 +19,13 @@ JOptionPane.showInputDialog(null,"做出你的选择！","标题", 0,new ImageIc
 JOptionPane.showConfirmDialog(null, "是否为蔡徐坤投上一票");
  */
 //sound = Applet.newAudioClip(new File("sounds/背景音乐.wav").toURL())
+
 public class HaremGame {
-	public static void main(String[] args) {
+File soundFile = new File("sounds/12.wav");
+AudioClip sound;
+	public static void main(String[] args) throws MalformedURLException {
 		Scanner input = new Scanner(System.in);
+		Music music = new Music();
 		String Name;//存放输入的姓名
 		String addName[] = {"邦哥","吴亦凡","giao哥","冬泳怪鸽"};//可添加的人物
 		int addNameCount = addName.length;//可添加人物数量
@@ -38,6 +42,7 @@ public class HaremGame {
 		JOptionPane.showMessageDialog(null,"导师，录制马上开始，学员们已经等候多时了！", "大型在线真人选秀游戏：青春有你2",0, new ImageIcon("image/test1.jpg"));
 		while(gameDays <= 10)//运行十天
 		{
+		
 			String strMenu = "1、海选新人\n";
 			strMenu += "2、舞台表演\n";
 			strMenu += "3、强制退赛\n";
@@ -94,7 +99,7 @@ public class HaremGame {
 					loves[i] -= 10;
 				}
 				if (name == "菜虚鲲"){
-					xukun();	
+					music.playSound();	
 				}
 				JOptionPane.showMessageDialog(null, Names[searchIndex] + "才艺展示成功，积分+10，其他人物积分-10!","才艺展示",0,new ImageIcon("image/test1.jpg"));
 				break;
@@ -104,6 +109,7 @@ public class HaremGame {
 				System.out.println("请输入正确选项");
 				continue;
 			}//switch case的大括号
+			music.stopSound();
 			gameOver(nnCount, loves);//根据积分，判断游戏是否结束
 			Statistical(nnCount, Names, levelNames, level, loves);//打印积分窗口
 			gameDays++;
@@ -142,19 +148,13 @@ public class HaremGame {
 			System.exit(0);
 		}
 	}
-	/*
-	 * 蔡徐坤才艺表演事件集
-	 */
-	public static void xukun(){
-		File soundFile = new File("sounds/12.wav");
-		try {
-			AudioClip sound = Applet.newAudioClip(soundFile.toURL());
-			sound.play();
-			//sound.stop();
-			System.out.println("播放成功");
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 }
+
+
+
+
+
+
+
+
